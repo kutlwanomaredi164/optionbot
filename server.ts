@@ -357,11 +357,26 @@ app.post('/api/bots', (req: Request, res: Response) => {
 });
 
 app.put('/api/bots/:id', (req: Request, res: Response) => {
-  const updated = DB.updateChatbot(req.params.id, req.body);
-  if (!updated) {
+  const existing = DB.getChatbot(req.params.id);
+  if (!existing) {
+    if (req.body.name || req.body.businessName) {
+      const newBot = { id: req.params.id, ...req.body } as ChatbotConfig;
+      DB.upsertChatbot(newBot);
+      return res.json(newBot);
+    }
     return res.status(404).json({ error: 'Chatbot not found' });
   }
+  const updated = DB.updateChatbot(req.params.id, req.body);
   res.json(updated);
+});
+
+app.post('/api/bots/sync', (req: Request, res: Response) => {
+  const bot = req.body as ChatbotConfig;
+  if (!bot || !bot.id) {
+    return res.status(400).json({ error: 'Invalid bot data' });
+  }
+  const saved = DB.upsertChatbot(bot);
+  res.json({ success: true, bot: saved });
 });
 
 app.post('/api/bots/:id/duplicate', (req: Request, res: Response) => {
@@ -591,7 +606,8 @@ const handlePublicBotConfig = (req: Request, res: Response) => {
     });
   }
 
-  if (!bot.deployment.isEnabled) {
+  const isEnabled = bot.deployment ? bot.deployment.isEnabled : (bot as any).isDeploymentEnabled;
+  if (!isEnabled) {
     return res.status(403).json({
       error: 'This chatbot deployment has been disabled by its administrator.',
       status: 'disabled',
@@ -600,7 +616,7 @@ const handlePublicBotConfig = (req: Request, res: Response) => {
 
   // Domain security check (if allowedDomains does not include wildcard '*')
   const origin = (req.headers.origin as string) || (req.headers.referer as string) || '';
-  const allowed = bot.deployment.allowedDomains || ['*'];
+  const allowed = bot.deployment?.allowedDomains || ['*'];
   const isAllowed =
     allowed.includes('*') ||
     allowed.some((d: string) => {
@@ -624,14 +640,14 @@ const handlePublicBotConfig = (req: Request, res: Response) => {
     description: bot.description,
     currency: bot.currency || 'ZAR',
     conversationStyle: bot.conversationStyle,
-    appearance: bot.appearance,
+    appearance: bot.appearance || {},
     deployment: {
-      deploymentId: bot.deployment.deploymentId,
-      isEnabled: bot.deployment.isEnabled,
-      allowedDomains: bot.deployment.allowedDomains,
+      deploymentId: bot.deployment?.deploymentId || bot.id,
+      isEnabled: true,
+      allowedDomains: bot.deployment?.allowedDomains || ['*'],
     },
-    mainMenuItems: bot.mainMenuItems.filter((m) => !m.isHidden),
-    greetingMessage: bot.appearance.greetingMessage,
+    mainMenuItems: (bot.mainMenuItems || []).filter((m) => !m.isHidden),
+    greetingMessage: bot.appearance?.greetingMessage || `Hey! Welcome to ${bot.businessName}. How can we help you today?`,
   });
 };
 

@@ -567,16 +567,79 @@ export const api = {
     return { botResponse, conversation };
   },
 
+  // Sync bot to server backend cache
+  async syncBot(bot: ChatbotConfig): Promise<void> {
+    try {
+      await fetch('/api/bots/sync', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(bot),
+      });
+    } catch {
+      // Backend unavailable or running client-only
+    }
+  },
+
   // Public deployment check
   async getPublicBot(deploymentId: string): Promise<any> {
+    let serverErrMessage: string | null = null;
+    let serverStatus: number | null = null;
+
+    // 1. Try server endpoint first
     try {
-      const res = await fetch(`/api/public/bot/${deploymentId}`);
-      if (res.ok) return res.json();
-    } catch {
-      // Backend route unavailable on Vercel, fallback to Firestore
+      const res = await fetch(`/api/public/bot/${encodeURIComponent(deploymentId)}`);
+      serverStatus = res.status;
+      if (res.ok) {
+        return await res.json();
+      }
+      const errData = await res.json().catch(() => ({}));
+      if (errData.error) {
+        serverErrMessage = errData.error;
+      }
+      // If server explicitly returned 403 Forbidden (draft, disabled, or domain restricted), enforce immediately
+      if (res.status === 403) {
+        throw new Error(errData.error || 'This chatbot widget is currently disabled or in draft mode.');
+      }
+    } catch (e: any) {
+      if (serverStatus === 403) {
+        throw e;
+      }
+      // Server returned 404 or network error, attempt direct Firestore verification
     }
 
+    // 2. Direct Firestore lookup fallback (e.g. for Vercel or newly created Firestore bots)
     try {
+      // Check by direct document ID first
+      const docRef = doc(db, 'chatbots', deploymentId);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        const d = docSnap.data();
+        if (d.status !== 'published') {
+          throw new Error('This chatbot is currently in draft mode and not published.');
+        }
+        if (d.isDeploymentEnabled === false) {
+          throw new Error('This chatbot deployment has been disabled by its administrator.');
+        }
+        return {
+          id: d.id || docSnap.id,
+          name: d.name,
+          businessName: d.businessName,
+          industry: d.industry,
+          description: d.description,
+          currency: d.currency || 'ZAR',
+          conversationStyle: d.conversationStyle,
+          appearance: d.appearance || {},
+          deployment: {
+            deploymentId: d.deploymentId || d.id || docSnap.id,
+            isEnabled: true,
+            allowedDomains: ['*'],
+          },
+          mainMenuItems: (d.mainMenuItems || []).filter((m: any) => !m.isHidden),
+          greetingMessage: d.appearance?.greetingMessage || `Hey! Welcome to ${d.businessName}. How can we help you today?`,
+        };
+      }
+
+      // Check by deploymentId field
       const q = query(
         collection(db, 'chatbots'),
         where('deploymentId', '==', deploymentId),
@@ -584,12 +647,38 @@ export const api = {
       );
       const snap = await getDocs(q);
       if (!snap.empty) {
-        return snap.docs[0].data();
+        const d = snap.docs[0].data();
+        if (d.isDeploymentEnabled === false) {
+          throw new Error('This chatbot deployment has been disabled by its administrator.');
+        }
+        return {
+          id: d.id || snap.docs[0].id,
+          name: d.name,
+          businessName: d.businessName,
+          industry: d.industry,
+          description: d.description,
+          currency: d.currency || 'ZAR',
+          conversationStyle: d.conversationStyle,
+          appearance: d.appearance || {},
+          deployment: {
+            deploymentId: d.deploymentId || snap.docs[0].id,
+            isEnabled: true,
+            allowedDomains: ['*'],
+          },
+          mainMenuItems: (d.mainMenuItems || []).filter((m: any) => !m.isHidden),
+          greetingMessage: d.appearance?.greetingMessage || `Hey! Welcome to ${d.businessName}. How can we help you today?`,
+        };
       }
-    } catch (e) {
+    } catch (e: any) {
+      if (e.message && (e.message.includes('draft mode') || e.message.includes('disabled'))) {
+        throw e;
+      }
       console.warn('Firestore getPublicBot fallback notice:', e);
     }
 
-    throw new Error('This chatbot widget is currently disabled or in draft mode.');
+    if (serverErrMessage) {
+      throw new Error(serverErrMessage);
+    }
+    throw new Error(`Chatbot deployment "${deploymentId}" was not found.`);
   },
 };

@@ -46,7 +46,8 @@
         "deploymentId": { "type": "string", "maxLength": 128 },
         "isDeploymentEnabled": { "type": "boolean" },
         "createdAt": { "type": "string", "format": "date-time" },
-        "updatedAt": { "type": "string", "format": "date-time" }
+        "updatedAt": { "type": "string", "format": "date-time" },
+        "lastPublishedAt": { "type": "string", "format": "date-time" }
       },
       "required": ["id", "workspaceId", "ownerId", "name", "businessName", "status", "createdAt"]
     },

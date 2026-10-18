@@ -31,8 +31,10 @@ export const firestoreSync = {
    */
   async saveChatbot(bot: ChatbotConfig, userId: string): Promise<void> {
     const path = `chatbots/${bot.id}`;
+    const deploymentId = bot.deployment?.deploymentId || bot.id;
+    const isEnabled = bot.deployment ? Boolean(bot.deployment.isEnabled) : true;
     try {
-      await setDoc(doc(db, 'chatbots', bot.id), {
+      const docPayload: Record<string, any> = {
         id: bot.id,
         workspaceId: bot.workspaceId,
         ownerId: userId,
@@ -42,8 +44,8 @@ export const firestoreSync = {
         status: bot.status || 'draft',
         currency: bot.currency || 'ZAR',
         conversationStyle: bot.conversationStyle || 'hybrid',
-        deploymentId: bot.deployment?.deploymentId || '',
-        isDeploymentEnabled: Boolean(bot.deployment?.isEnabled),
+        deploymentId,
+        isDeploymentEnabled: isEnabled,
         website: bot.website || '',
         contactEmail: bot.contactEmail || '',
         contactPhone: bot.contactPhone || '',
@@ -53,7 +55,11 @@ export const firestoreSync = {
         aiSettings: bot.aiConfig || {},
         createdAt: bot.createdAt || new Date().toISOString(),
         updatedAt: new Date().toISOString(),
-      }, { merge: true });
+      };
+      if (bot.lastPublishedAt) {
+        docPayload.lastPublishedAt = bot.lastPublishedAt;
+      }
+      await setDoc(doc(db, 'chatbots', bot.id), docPayload, { merge: true });
     } catch (err) {
       handleFirestoreError(err, OperationType.WRITE, path);
     }

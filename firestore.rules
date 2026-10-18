@@ -65,7 +65,7 @@ service cloud.firestore {
                'status', 'currency', 'conversationStyle', 'deploymentId',
                'isDeploymentEnabled', 'website', 'contactEmail', 'contactPhone',
                'description', 'templateId', 'mainMenuItems', 'appearance', 'aiSettings',
-               'createdAt', 'updatedAt'
+               'createdAt', 'updatedAt', 'lastPublishedAt'
              ]) &&
              data.id is string && isValidId(data.id) &&
              data.name is string && data.name.size() <= 120 &&
@@ -172,7 +172,7 @@ service cloud.firestore {
       // Published chatbots are publicly readable by widgets; drafts only by owner
       allow get: if isValidId(botId) &&
                     (resource.data.status == 'published' || (isSignedIn() && resource.data.ownerId == request.auth.uid));
-      allow list: if isSignedIn() && resource.data.ownerId == request.auth.uid;
+      allow list: if resource.data.status == 'published' || (isSignedIn() && resource.data.ownerId == request.auth.uid);
 
       allow create: if isValidId(botId) &&
                        isSignedIn() &&

@@ -351,7 +351,7 @@ export class DB {
   }
 
   static getChatbotByDeployment(deploymentId: string): ChatbotConfig | undefined {
-    return this.load().chatbots.find((b) => b.deployment.deploymentId === deploymentId);
+    return this.load().chatbots.find((b) => b.deployment?.deploymentId === deploymentId || b.id === deploymentId);
   }
 
   static createChatbot(bot: ChatbotConfig): ChatbotConfig {
@@ -362,6 +362,27 @@ export class DB {
     }
     this.save(data);
     return bot;
+  }
+
+  static upsertChatbot(bot: ChatbotConfig): ChatbotConfig {
+    const data = this.load();
+    const idx = data.chatbots.findIndex((b) => b.id === bot.id || (b.deployment?.deploymentId && b.deployment.deploymentId === bot.deployment?.deploymentId));
+    if (idx >= 0) {
+      data.chatbots[idx] = {
+        ...data.chatbots[idx],
+        ...bot,
+        updatedAt: new Date().toISOString(),
+      };
+      this.save(data);
+      return data.chatbots[idx];
+    } else {
+      data.chatbots.push(bot);
+      if (!data.menuClickCounts[bot.id]) {
+        data.menuClickCounts[bot.id] = {};
+      }
+      this.save(data);
+      return bot;
+    }
   }
 
   static updateChatbot(id: string, updates: Partial<ChatbotConfig>): ChatbotConfig | null {
