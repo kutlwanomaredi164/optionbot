@@ -1,0 +1,1126 @@
+{
+  "workspaces": [
+    {
+      "id": "ws_default_1",
+      "name": "Lumière Creative Works",
+      "industry": "Photography Studio",
+      "ownerEmail": "kutlee36@gmail.com",
+      "createdAt": "2026-10-17T14:34:22.822Z"
+    }
+  ],
+  "users": [
+    {
+      "id": "user_1",
+      "name": "Alex Morgan",
+      "email": "kutlee36@gmail.com",
+      "role": "owner",
+      "currentWorkspaceId": "ws_default_1"
+    }
+  ],
+  "chatbots": [
+    {
+      "id": "bot_photo_101",
+      "workspaceId": "ws_default_1",
+      "name": "Lens & Light Studio Bot",
+      "businessName": "Lens & Light Photography",
+      "industry": "Photography Studio",
+      "description": "Boutique portrait and wedding photography studio based in London and the Cotswolds.",
+      "website": "https://lensandlight.co.uk",
+      "contactEmail": "hello@lensandlight.co.uk",
+      "contactPhone": "+44 20 7946 0912",
+      "conversationStyle": "hybrid",
+      "status": "published",
+      "lastPublishedAt": "2026-10-16T14:34:22.822Z",
+      "createdAt": "2026-10-15T14:34:22.822Z",
+      "updatedAt": "2026-10-17T15:04:28.272Z",
+      "currency": "ZAR",
+      "mainMenuItems": [
+        {
+          "id": "menu_services",
+          "title": "Services & Prices",
+          "description": "Explore portrait, wedding, and event packages",
+          "icon": "camera",
+          "isHidden": false,
+          "order": 1,
+          "subtopics": [
+            {
+              "id": "sub_portrait",
+              "title": "Portrait Sessions",
+              "description": "Individual, executive headshot, and creative portraits",
+              "order": 1,
+              "contentType": "service_product",
+              "content": {
+                "serviceProduct": {
+                  "name": "Signature Portrait Session",
+                  "description": "A 60-minute in-studio or on-location portrait experience with professional lighting, outfit changes, and master retouching.",
+                  "price": " R500",
+                  "pricingMethod": "starting_at",
+                  "duration": "60 minutes",
+                  "inclusions": [
+                    "1-hour shooting time",
+                    "2 wardrobe changes",
+                    "Online proofing gallery with 40+ proofs",
+                    "5 high-resolution retouched digital files"
+                  ],
+                  "exclusions": [
+                    "Hair and makeup styling (available as +R 95.00 add-on)",
+                    "Fine-art prints (ordered separately via client store)"
+                  ],
+                  "actionLabel": "Book Session",
+                  "linkedActionId": "act_book_portrait"
+                }
+              }
+            },
+            {
+              "id": "sub_wedding",
+              "title": "Wedding Photography",
+              "description": "Full-day and elopement wedding coverage",
+              "order": 2,
+              "contentType": "service_product",
+              "content": {
+                "serviceProduct": {
+                  "name": "The Storyteller Wedding Collection",
+                  "description": "Full-day documentary wedding coverage by lead photographer with second shooter, engagement session, and heirloom album.",
+                  "price": "R 2,850.00",
+                  "pricingMethod": "fixed",
+                  "duration": "8 hours",
+                  "inclusions": [
+                    "8 hours coverage with 2 photographers",
+                    "Complimentary 1-hour engagement session",
+                    "500+ hand-edited high-res photos with print rights",
+                    "Private online gallery with 1-year cloud backup"
+                  ],
+                  "exclusions": [
+                    "Travel outside 50 km (R 12.50/km)",
+                    "Overtime hours billed at R 300.00/hour"
+                  ],
+                  "actionLabel": "Check Date Availability",
+                  "linkedActionId": "act_wedding_quote"
+                }
+              }
+            },
+            {
+              "id": "sub_commercial",
+              "title": "Commercial & Branding",
+              "description": "Brand storytelling, product shots, and team headshots",
+              "order": 3,
+              "contentType": "service_product",
+              "content": {
+                "serviceProduct": {
+                  "name": "Brand Imagery Package",
+                  "description": "Tailored commercial visual assets for websites, social campaigns, and press kits.",
+                  "price": "R 1,200.00",
+                  "pricingMethod": "starting_at",
+                  "duration": "Half-day (4 hours)",
+                  "inclusions": [
+                    "Pre-shoot mood board and creative consultation",
+                    "4 hours on-site photography",
+                    "Commercial usage license for digital and print",
+                    "35 fully retouched brand assets"
+                  ],
+                  "actionLabel": "Request Commercial Quote",
+                  "linkedActionId": "act_quote"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "id": "menu_portfolio",
+          "title": "Portfolio & Galleries",
+          "description": "View curated highlights from recent sessions",
+          "icon": "image",
+          "isHidden": false,
+          "order": 2,
+          "subtopics": [
+            {
+              "id": "sub_gallery_weddings",
+              "title": "Featured Weddings",
+              "description": "Emotional moments, venues, and candid highlights",
+              "order": 1,
+              "contentType": "gallery",
+              "content": {
+                "gallery": {
+                  "galleryName": "Wedding & Editorial Highlights",
+                  "images": [
+                    {
+                      "url": "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=80",
+                      "caption": "Sunset vow exchange overlooking coastal cliffs",
+                      "category": "Ceremony"
+                    },
+                    {
+                      "url": "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=800&q=80",
+                      "caption": "Intimate first dance in vintage greenhouse",
+                      "category": "Reception"
+                    },
+                    {
+                      "url": "https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=800&q=80",
+                      "caption": "Bridal preparation and natural morning light",
+                      "category": "Details"
+                    }
+                  ],
+                  "approvedPortfolioLinks": [
+                    {
+                      "label": "View Full Client Gallery (Pixieset)",
+                      "url": "https://lenslight.pixieset.com"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "id": "sub_gallery_portraits",
+              "title": "Studio Portraits",
+              "description": "Fine art and modern editorial portraits",
+              "order": 2,
+              "contentType": "gallery",
+              "content": {
+                "gallery": {
+                  "galleryName": "Studio & Natural Light Portraits",
+                  "images": [
+                    {
+                      "url": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80",
+                      "caption": "High-contrast studio editorial portrait",
+                      "category": "Studio"
+                    },
+                    {
+                      "url": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=800&q=80",
+                      "caption": "Executive headshot for technology founder",
+                      "category": "Corporate"
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "id": "menu_policies",
+          "title": "Policies & Information",
+          "description": "Session prep, turnaround times, and booking terms",
+          "icon": "file-text",
+          "isHidden": false,
+          "order": 3,
+          "subtopics": [
+            {
+              "id": "sub_turnaround",
+              "title": "Turnaround Times & Delivery",
+              "description": "When and how you receive your final gallery",
+              "order": 1,
+              "contentType": "information",
+              "content": {
+                "information": {
+                  "title": "Photo Delivery Timeline",
+                  "shortDescription": "Standard turnaround is 10 business days for portraits and 3-4 weeks for weddings.",
+                  "detailedContent": "Portraits are ready in an online preview proofing gallery within 5 days. Once you select your favorite images for retouching, final high-resolution files are delivered within 5 additional business days. Weddings include sneak-peek photos within 48 hours and complete gallery delivery within 3-4 weeks."
+                }
+              }
+            },
+            {
+              "id": "sub_rescheduling",
+              "title": "Rescheduling & Deposit Policy",
+              "description": "Cancellation terms and inclement weather adjustments",
+              "order": 2,
+              "contentType": "policy",
+              "content": {
+                "policy": {
+                  "policyTitle": "Booking Deposit & Rescheduling Rules",
+                  "policyText": "A non-refundable 25% deposit secures your date. In the event of illness or severe weather for outdoor sessions, clients may reschedule once with at least 48 hours notice without incurring a rebooking fee.",
+                  "effectiveDate": "2026-01-01"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "id": "menu_delivery",
+          "title": "Delivery & Print Ordering",
+          "description": "Download formats, cloud backup, and print studio",
+          "icon": "truck",
+          "isHidden": false,
+          "order": 4,
+          "subtopics": [
+            {
+              "id": "sub_digital_delivery",
+              "title": "Digital Downloads & Licenses",
+              "description": "High-resolution JPEG files with full personal print release",
+              "order": 1,
+              "contentType": "faq",
+              "content": {
+                "faq": {
+                  "question": "Can I print my photos wherever I want?",
+                  "approvedAnswer": "Yes! Every delivered digital file includes a full personal print release. You can print them at any lab of your choice or order museum-grade archival prints directly through your private gallery."
+                }
+              }
+            }
+          ]
+        },
+        {
+          "id": "menu_talk_to_person",
+          "title": "Custom Message — Talk to a Person",
+          "description": "Leave a direct message for the studio team",
+          "icon": "user",
+          "isHidden": false,
+          "order": 5,
+          "subtopics": [
+            {
+              "id": "sub_human_assist",
+              "title": "Contact Studio Director",
+              "description": "Have a bespoke request? Chat with our team",
+              "order": 1,
+              "contentType": "human_assistance",
+              "content": {
+                "humanAssistance": {
+                  "introductoryMessage": "Our lead photographer and studio manager review every custom enquiry personally. Leave your note and preferred contact details below.",
+                  "customerMessagePlaceholder": "Tell us about your shoot date, venue, idea, or questions...",
+                  "requireContactDetails": true,
+                  "contactFields": [
+                    "name",
+                    "email",
+                    "phone"
+                  ],
+                  "handoffDestination": "dashboard_inbox",
+                  "confirmationBehavior": "Our studio director will respond within 4 business hours."
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "appearance": {
+        "botDisplayName": "Lens & Light Assistant",
+        "greetingMessage": "Hey! Welcome to Lens & Light Photography. How can we help you today?",
+        "logoUrl": "",
+        "brandColor": "#4f46e5",
+        "accentColor": "#6366f1",
+        "launcherPosition": "bottom_right",
+        "headerStyle": "solid",
+        "widgetSize": "standard",
+        "welcomeScreenText": "Select a service below or type your question for instant answers."
+      },
+      "deployment": {
+        "deploymentId": "dep_lens_light_pub",
+        "isEnabled": true,
+        "allowedDomains": [
+          "*",
+          "https://appmedia-u7olse9b0-wan0.vercel.app",
+          "appmedia-u7olse9b0-wan0.vercel.app"
+        ],
+        "embedSnippet": "<script src=\"/widget.js\" data-bot-id=\"dep_lens_light_pub\" async></script>",
+        "whatsappConfig": {
+          "isConnected": false,
+          "status": "disconnected"
+        }
+      },
+      "aiConfig": {
+        "model": "gemini-3.8-flash",
+        "systemPrompt": "You are the intelligent assistant for a boutique photography studio. Provide helpful, polite, and accurate information about sessions, packages, pricing, timelines, and wardrobe advice based on the studio knowledge base. If an enquiry requires bespoke scheduling or custom quotes, invite the user to select the \"Talk to a Person\" option.",
+        "temperature": 0.3,
+        "greetingMessage": "Hey! Welcome to Lens & Light Photography. How can we help you today?",
+        "fallbackMessage": "I'd love to help you with that! For special requests, you can choose 'Talk to a Person' or pick from our services below."
+      }
+    },
+    {
+      "id": "bot_bistro_102",
+      "workspaceId": "ws_default_1",
+      "name": "Bella Vista Trattoria Bot",
+      "businessName": "Bella Vista Trattoria",
+      "industry": "Restaurant & Hospitality",
+      "description": "Artisanal regional Italian cuisine, handmade pastas, and curated natural wines.",
+      "website": "https://bellavistatrattoria.com",
+      "contactEmail": "reservations@bellavistatrattoria.com",
+      "contactPhone": "+1 (555) 019-8472",
+      "conversationStyle": "hybrid",
+      "status": "published",
+      "lastPublishedAt": "2026-10-17T02:34:22.822Z",
+      "createdAt": "2026-10-16T02:34:22.822Z",
+      "updatedAt": "2026-10-17T14:34:22.822Z",
+      "currency": "ZAR",
+      "mainMenuItems": [
+        {
+          "id": "menu_food_prices",
+          "title": "Menus & Prices",
+          "description": "Explore lunch, dinner, drinks, and daily specials",
+          "icon": "utensils",
+          "isHidden": false,
+          "order": 1,
+          "subtopics": [
+            {
+              "id": "sub_dinner_menu",
+              "title": "Dinner Menu",
+              "description": "House-made pasta, wood-fired mains, and appetizers",
+              "order": 1,
+              "contentType": "information",
+              "content": {
+                "information": {
+                  "title": "Seasonal Dinner Offerings",
+                  "shortDescription": "Handcrafted Italian fare featuring locally sourced ingredients.",
+                  "detailedContent": "• Truffle Tagliolini: Fresh egg pasta, cultured butter, shaved black winter truffle (R 280.00)\n• Bistecca Fiorentina: 32oz dry-aged porterhouse, rosemary sea salt, charred lemon (R 860.00)\n• Branzino al Forno: Whole roasted sea bass, wild fennel, salsa verde (R 360.00)\n• Burrata Pugliese: Heirloom tomato carpaccio, 12-year balsamic, basil crisp (R 190.00)"
+                }
+              }
+            },
+            {
+              "id": "sub_specials",
+              "title": "Chef Specials & Tasting Menu",
+              "description": "Five-course tasting experience with wine pairing",
+              "order": 2,
+              "contentType": "service_product",
+              "content": {
+                "serviceProduct": {
+                  "name": "Chef Tasting Menu (5 Courses)",
+                  "description": "A curated journey through regional Italian culinary traditions with optional sommelier pairings.",
+                  "price": "R 950.00 per person",
+                  "pricingMethod": "fixed",
+                  "inclusions": [
+                    "Amuse-bouche and house-baked rosemary focaccia",
+                    "Antipasto, primo pasta, secondo meat/fish, and dolce",
+                    "Dietary accommodations with 24h advance notice"
+                  ],
+                  "exclusions": [
+                    "Sommelier Wine Pairing (available for +R 550.00/guest)",
+                    "10% service charge for parties of 6 or more"
+                  ],
+                  "actionLabel": "Reserve Tasting Table",
+                  "linkedActionId": "act_table_res"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "id": "menu_reservations",
+          "title": "Table Reservations",
+          "description": "Book indoor, terrace, or private dining tables",
+          "icon": "calendar",
+          "isHidden": false,
+          "order": 2,
+          "subtopics": [
+            {
+              "id": "sub_book_table",
+              "title": "Reserve a Table",
+              "description": "Immediate booking for parties of 1 to 10 guests",
+              "order": 1,
+              "contentType": "action",
+              "content": {
+                "action": {
+                  "actionId": "act_table_res",
+                  "actionType": "booking",
+                  "title": "Table Reservation Request",
+                  "description": "Let us know your preferred date, party size, and seating preference.",
+                  "fields": [
+                    {
+                      "id": "f_name",
+                      "label": "Guest Full Name",
+                      "type": "text",
+                      "required": true,
+                      "placeholder": "e.g. Sofia Rossi"
+                    },
+                    {
+                      "id": "f_phone",
+                      "label": "Phone Number (SMS confirmation)",
+                      "type": "phone",
+                      "required": true,
+                      "placeholder": "(082) 019-2834"
+                    },
+                    {
+                      "id": "f_date",
+                      "label": "Reservation Date",
+                      "type": "date",
+                      "required": true
+                    },
+                    {
+                      "id": "f_time",
+                      "label": "Preferred Time",
+                      "type": "time",
+                      "required": true
+                    },
+                    {
+                      "id": "f_guests",
+                      "label": "Number of Guests",
+                      "type": "select",
+                      "required": true,
+                      "options": [
+                        "1-2 Guests",
+                        "3-4 Guests",
+                        "5-6 Guests",
+                        "7-8 Guests",
+                        "Private Event (9+)"
+                      ]
+                    },
+                    {
+                      "id": "f_notes",
+                      "label": "Dietary Restrictions or Special Occasions",
+                      "type": "textarea",
+                      "required": false,
+                      "placeholder": "e.g. Birthday anniversary, gluten intolerance..."
+                    }
+                  ],
+                  "submitButtonText": "Confirm Reservation Request",
+                  "successMessage": "Reservation submitted! Our host will send an SMS confirmation within 15 minutes."
+                }
+              }
+            }
+          ]
+        },
+        {
+          "id": "menu_allergies_policies",
+          "title": "Policies & Dietary Information",
+          "description": "Dress code, corkage fee, and allergen guidelines",
+          "icon": "file-text",
+          "isHidden": false,
+          "order": 3,
+          "subtopics": [
+            {
+              "id": "sub_dietary",
+              "title": "Allergen & Gluten-Free Guide",
+              "description": "Nut-free, vegetarian, vegan, and celiac options",
+              "order": 1,
+              "contentType": "faq",
+              "content": {
+                "faq": {
+                  "question": "Do you offer gluten-free pasta and vegetarian options?",
+                  "approvedAnswer": "Yes! We prepare fresh gluten-free penne and tagliatelle daily in a dedicated cook station. Over 40% of our menu items are vegetarian or can be adapted for plant-based diners."
+                }
+              }
+            },
+            {
+              "id": "sub_corkage",
+              "title": "Corkage & Cake Cutting Policy",
+              "description": "Bringing personal wine or celebratory desserts",
+              "order": 2,
+              "contentType": "policy",
+              "content": {
+                "policy": {
+                  "policyTitle": "Corkage & Outside Food Policy",
+                  "policyText": "Corkage fee is R 120.00 per 750ml bottle, limited to two bottles per party. Outside celebratory cakes carry a R 45.00 per guest serving and plating fee.",
+                  "effectiveDate": "2026-01-01"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "id": "menu_delivery_takeout",
+          "title": "Delivery & Takeout",
+          "description": "Direct online ordering and delivery partners",
+          "icon": "truck",
+          "isHidden": false,
+          "order": 4,
+          "subtopics": [
+            {
+              "id": "sub_order_online",
+              "title": "Order Direct for Curbside Pickup",
+              "description": "Save 15% when ordering takeout directly from our kitchen",
+              "order": 1,
+              "contentType": "external_link",
+              "content": {
+                "externalLink": {
+                  "linkLabel": "Open Online Takeout Menu",
+                  "destinationUrl": "https://toasttab.com/order-online",
+                  "description": "Hot, fresh pickup ready in 25 minutes with curbside parking spots #1-4.",
+                  "openInNewTab": true
+                }
+              }
+            }
+          ]
+        },
+        {
+          "id": "menu_speak_manager",
+          "title": "Custom Message — Talk to a Person",
+          "description": "Contact our floor manager or event coordinator",
+          "icon": "user",
+          "isHidden": false,
+          "order": 5,
+          "subtopics": [
+            {
+              "id": "sub_manager_msg",
+              "title": "Message Floor Manager",
+              "description": "Private buyouts, party enquiries, or urgent questions",
+              "order": 1,
+              "contentType": "human_assistance",
+              "content": {
+                "humanAssistance": {
+                  "introductoryMessage": "Need help with a large party, buyout, or special request? Send a message to our general manager directly.",
+                  "customerMessagePlaceholder": "How can our hospitality team assist you tonight?",
+                  "requireContactDetails": true,
+                  "contactFields": [
+                    "name",
+                    "phone",
+                    "email"
+                  ],
+                  "handoffDestination": "dashboard_inbox",
+                  "confirmationBehavior": "Our on-duty manager monitors incoming messages continuously during dining service."
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "appearance": {
+        "botDisplayName": "Bella Vista Host",
+        "greetingMessage": "Benvenuti! Welcome to Bella Vista Trattoria. What would you like to explore today?",
+        "logoUrl": "",
+        "brandColor": "#0f766e",
+        "accentColor": "#14b8a6",
+        "launcherPosition": "bottom_right",
+        "headerStyle": "solid",
+        "widgetSize": "standard",
+        "welcomeScreenText": "Reserve a table, view dinner menus, or ask about our ingredients."
+      },
+      "deployment": {
+        "deploymentId": "dep_bella_vista_pub",
+        "isEnabled": true,
+        "allowedDomains": [
+          "*"
+        ],
+        "embedSnippet": "<script src=\"/widget.js\" data-bot-id=\"dep_bella_vista_pub\" async></script>",
+        "whatsappConfig": {
+          "isConnected": false,
+          "status": "disconnected"
+        }
+      },
+      "aiConfig": {
+        "model": "gemini-3.8-flash",
+        "systemPrompt": "You are the digital concierge for an upscale Italian restaurant. Answer queries about opening hours, table bookings, dietary options, wine pairings, and parking courteously. Use the restaurant menus and policies strictly.",
+        "temperature": 0.2,
+        "greetingMessage": "Benvenuti! Welcome to Bella Vista Trattoria. What would you like to explore today?",
+        "fallbackMessage": "Our host team is pleased to assist. Please select from the menu options below or request a manager callback."
+      }
+    }
+  ],
+  "knowledge": [
+    {
+      "id": "know_photo_1",
+      "botId": "bot_photo_101",
+      "title": "Studio Location & Hours",
+      "category": "hours",
+      "type": "text",
+      "content": "The studio is located at 440 Artisan Way, Suite 200. Open Tuesday through Saturday from 9:00 AM to 6:00 PM by appointment only. Free dedicated parking is available in the rear lot.",
+      "tags": [
+        "location",
+        "parking",
+        "hours"
+      ],
+      "ingestionStatus": "ready",
+      "updatedAt": "2026-10-17T14:34:22.822Z"
+    },
+    {
+      "id": "know_photo_2",
+      "botId": "bot_photo_101",
+      "title": "What to Wear to a Portrait Session",
+      "category": "faq",
+      "type": "faq",
+      "content": "We recommend solid neutral or jewel-toned colors. Avoid small repetitive stripes, neon colors, and prominent logos. Bring 2 to 3 outfit options so the photographer can help select what photographs best with our backdrop setup.",
+      "tags": [
+        "wardrobe",
+        "preparation",
+        "portraits"
+      ],
+      "ingestionStatus": "ready",
+      "updatedAt": "2026-10-17T14:34:22.822Z"
+    },
+    {
+      "id": "know_photo_3",
+      "botId": "bot_photo_101",
+      "title": "Payment Terms & Methods",
+      "category": "pricing",
+      "type": "policy",
+      "content": "We accept all major credit cards, debit cards, bank ACH transfers, and Apple Pay. 25% due upon booking, remaining 75% due 48 hours before the shoot date.",
+      "tags": [
+        "payment",
+        "deposit",
+        "credit cards"
+      ],
+      "ingestionStatus": "ready",
+      "updatedAt": "2026-10-17T14:34:22.822Z"
+    },
+    {
+      "id": "know_resto_1",
+      "botId": "bot_bistro_102",
+      "title": "Hours of Operation",
+      "category": "hours",
+      "type": "text",
+      "content": "Lunch: Tuesday - Sunday, 11:30 AM to 2:30 PM. Dinner: Sunday - Thursday, 5:00 PM to 10:00 PM; Friday & Saturday, 5:00 PM to 11:00 PM. Closed Mondays.",
+      "tags": [
+        "hours",
+        "schedule",
+        "lunch",
+        "dinner"
+      ],
+      "ingestionStatus": "ready",
+      "updatedAt": "2026-10-17T14:34:22.822Z"
+    },
+    {
+      "id": "know_resto_2",
+      "botId": "bot_bistro_102",
+      "title": "Valet & Parking Information",
+      "category": "general",
+      "type": "text",
+      "content": "Complimentary valet parking is available at our main entrance after 5:30 PM on Thursdays through Sundays. Street parking is available along Pine Street.",
+      "tags": [
+        "parking",
+        "valet"
+      ],
+      "ingestionStatus": "ready",
+      "updatedAt": "2026-10-17T14:34:22.822Z"
+    }
+  ],
+  "conversations": [
+    {
+      "id": "conv_photo_seed_1",
+      "botId": "bot_photo_101",
+      "customerSessionId": "sess_client_9921",
+      "customerName": "Sarah Jenkins",
+      "customerContact": "sarah.j@example.com",
+      "startedAt": "2026-10-17T09:34:22.822Z",
+      "lastActivityAt": "2026-10-17T09:46:22.822Z",
+      "status": "handoff_requested",
+      "messages": [
+        {
+          "id": "msg_1",
+          "conversationId": "conv_photo_seed_1",
+          "sender": "bot",
+          "text": "Hey! Welcome to Lens & Light Photography. How can we help you today?",
+          "timestamp": "2026-10-17T09:34:22.822Z"
+        },
+        {
+          "id": "msg_2",
+          "conversationId": "conv_photo_seed_1",
+          "sender": "customer",
+          "text": "Do you shoot autumn elopements in the Cotswolds?",
+          "timestamp": "2026-10-17T09:40:22.822Z"
+        },
+        {
+          "id": "msg_3",
+          "conversationId": "conv_photo_seed_1",
+          "sender": "bot",
+          "text": "Yes! We love capturing Cotswolds autumn weddings. Our Storyteller Collection covers full-day documentation, and we can also customize half-day elopement coverage.",
+          "timestamp": "2026-10-17T09:40:58.822Z"
+        },
+        {
+          "id": "msg_4",
+          "conversationId": "conv_photo_seed_1",
+          "sender": "customer",
+          "text": "Can I speak with someone about availability for October 18th?",
+          "timestamp": "2026-10-17T09:43:22.822Z"
+        },
+        {
+          "id": "msg_5",
+          "conversationId": "conv_photo_seed_1",
+          "sender": "bot",
+          "text": "Your request has been routed to our studio director. We have recorded your note and contact details.",
+          "timestamp": "2026-10-17T09:46:22.822Z"
+        }
+      ]
+    },
+    {
+      "id": "conv_1792249407349_c357",
+      "botId": "bot_photo_101",
+      "customerSessionId": "client_1792249407349",
+      "startedAt": "2026-10-17T15:03:27.349Z",
+      "lastActivityAt": "2026-10-17T15:04:32.768Z",
+      "status": "active",
+      "messages": [
+        {
+          "id": "msg_init_1792249407349",
+          "conversationId": "conv_1792249407349_c357",
+          "sender": "bot",
+          "text": "Hey! Welcome to Lens & Light Photography. How can we help you today?",
+          "timestamp": "2026-10-17T15:03:27.349Z",
+          "payload": {
+            "type": "menu",
+            "menuItems": [
+              {
+                "id": "menu_services",
+                "title": "Services & Prices",
+                "description": "Explore portrait, wedding, and event packages",
+                "icon": "camera"
+              },
+              {
+                "id": "menu_portfolio",
+                "title": "Portfolio & Galleries",
+                "description": "View curated highlights from recent sessions",
+                "icon": "image"
+              },
+              {
+                "id": "menu_policies",
+                "title": "Policies & Information",
+                "description": "Session prep, turnaround times, and booking terms",
+                "icon": "file-text"
+              },
+              {
+                "id": "menu_delivery",
+                "title": "Delivery & Print Ordering",
+                "description": "Download formats, cloud backup, and print studio",
+                "icon": "truck"
+              },
+              {
+                "id": "menu_talk_to_person",
+                "title": "Custom Message — Talk to a Person",
+                "description": "Leave a direct message for the studio team",
+                "icon": "user"
+              }
+            ]
+          }
+        },
+        {
+          "id": "msg_u_1792249471343",
+          "conversationId": "conv_1792249407349_c357",
+          "sender": "customer",
+          "text": "Services & Prices",
+          "timestamp": "2026-10-17T15:04:31.343Z"
+        },
+        {
+          "id": "msg_b_1792249471343",
+          "conversationId": "conv_1792249407349_c357",
+          "sender": "bot",
+          "text": "Services & Prices — Explore portrait, wedding, and event packages",
+          "timestamp": "2026-10-17T15:04:31.343Z",
+          "payload": {
+            "type": "subtopic",
+            "breadcrumbs": [
+              {
+                "label": "Main Menu"
+              },
+              {
+                "label": "Services & Prices",
+                "menuId": "menu_services"
+              }
+            ],
+            "subtopics": [
+              {
+                "id": "sub_portrait",
+                "title": "Portrait Sessions",
+                "description": "Individual, executive headshot, and creative portraits",
+                "contentType": "service_product"
+              },
+              {
+                "id": "sub_wedding",
+                "title": "Wedding Photography",
+                "description": "Full-day and elopement wedding coverage",
+                "contentType": "service_product"
+              },
+              {
+                "id": "sub_commercial",
+                "title": "Commercial & Branding",
+                "description": "Brand storytelling, product shots, and team headshots",
+                "contentType": "service_product"
+              }
+            ]
+          }
+        },
+        {
+          "id": "msg_u_1792249472768",
+          "conversationId": "conv_1792249407349_c357",
+          "sender": "customer",
+          "text": "Portrait Sessions",
+          "timestamp": "2026-10-17T15:04:32.768Z"
+        },
+        {
+          "id": "msg_b_1792249472768",
+          "conversationId": "conv_1792249407349_c357",
+          "sender": "bot",
+          "text": "Here is the information for Portrait Sessions:",
+          "timestamp": "2026-10-17T15:04:32.768Z",
+          "payload": {
+            "type": "content",
+            "breadcrumbs": [
+              {
+                "label": "Main Menu"
+              },
+              {
+                "label": "Services & Prices",
+                "menuId": "menu_services"
+              },
+              {
+                "label": "Portrait Sessions",
+                "subtopicId": "sub_portrait"
+              }
+            ],
+            "contentView": {
+              "contentType": "service_product",
+              "title": "Portrait Sessions",
+              "data": {
+                "serviceProduct": {
+                  "name": "Signature Portrait Session",
+                  "description": "A 60-minute in-studio or on-location portrait experience with professional lighting, outfit changes, and master retouching.",
+                  "price": " R500",
+                  "pricingMethod": "starting_at",
+                  "duration": "60 minutes",
+                  "inclusions": [
+                    "1-hour shooting time",
+                    "2 wardrobe changes",
+                    "Online proofing gallery with 40+ proofs",
+                    "5 high-resolution retouched digital files"
+                  ],
+                  "exclusions": [
+                    "Hair and makeup styling (available as +R 95.00 add-on)",
+                    "Fine-art prints (ordered separately via client store)"
+                  ],
+                  "actionLabel": "Book Session",
+                  "linkedActionId": "act_book_portrait"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "conv_1792251111477_3aog",
+      "botId": "bot_photo_101",
+      "customerSessionId": "client_1792251111477",
+      "startedAt": "2026-10-17T15:31:51.477Z",
+      "lastActivityAt": "2026-10-17T15:31:51.477Z",
+      "status": "active",
+      "messages": [
+        {
+          "id": "msg_init_1792251111477",
+          "conversationId": "conv_1792251111477_3aog",
+          "sender": "bot",
+          "text": "Hey! Welcome to Lens & Light Photography. How can we help you today?",
+          "timestamp": "2026-10-17T15:31:51.477Z",
+          "payload": {
+            "type": "menu",
+            "menuItems": [
+              {
+                "id": "menu_services",
+                "title": "Services & Prices",
+                "description": "Explore portrait, wedding, and event packages",
+                "icon": "camera"
+              },
+              {
+                "id": "menu_portfolio",
+                "title": "Portfolio & Galleries",
+                "description": "View curated highlights from recent sessions",
+                "icon": "image"
+              },
+              {
+                "id": "menu_policies",
+                "title": "Policies & Information",
+                "description": "Session prep, turnaround times, and booking terms",
+                "icon": "file-text"
+              },
+              {
+                "id": "menu_delivery",
+                "title": "Delivery & Print Ordering",
+                "description": "Download formats, cloud backup, and print studio",
+                "icon": "truck"
+              },
+              {
+                "id": "menu_talk_to_person",
+                "title": "Custom Message — Talk to a Person",
+                "description": "Leave a direct message for the studio team",
+                "icon": "user"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "conv_1792251113685_jkxp",
+      "botId": "bot_photo_101",
+      "customerSessionId": "client_1792251113685",
+      "startedAt": "2026-10-17T15:31:53.685Z",
+      "lastActivityAt": "2026-10-17T15:31:53.685Z",
+      "status": "active",
+      "messages": [
+        {
+          "id": "msg_init_1792251113685",
+          "conversationId": "conv_1792251113685_jkxp",
+          "sender": "bot",
+          "text": "Hey! Welcome to Lens & Light Photography. How can we help you today?",
+          "timestamp": "2026-10-17T15:31:53.685Z",
+          "payload": {
+            "type": "menu",
+            "menuItems": [
+              {
+                "id": "menu_services",
+                "title": "Services & Prices",
+                "description": "Explore portrait, wedding, and event packages",
+                "icon": "camera"
+              },
+              {
+                "id": "menu_portfolio",
+                "title": "Portfolio & Galleries",
+                "description": "View curated highlights from recent sessions",
+                "icon": "image"
+              },
+              {
+                "id": "menu_policies",
+                "title": "Policies & Information",
+                "description": "Session prep, turnaround times, and booking terms",
+                "icon": "file-text"
+              },
+              {
+                "id": "menu_delivery",
+                "title": "Delivery & Print Ordering",
+                "description": "Download formats, cloud backup, and print studio",
+                "icon": "truck"
+              },
+              {
+                "id": "menu_talk_to_person",
+                "title": "Custom Message — Talk to a Person",
+                "description": "Leave a direct message for the studio team",
+                "icon": "user"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "conv_1792251116013_8mqi",
+      "botId": "bot_photo_101",
+      "customerSessionId": "client_1792251116013",
+      "startedAt": "2026-10-17T15:31:56.013Z",
+      "lastActivityAt": "2026-10-17T15:31:56.013Z",
+      "status": "active",
+      "messages": [
+        {
+          "id": "msg_init_1792251116013",
+          "conversationId": "conv_1792251116013_8mqi",
+          "sender": "bot",
+          "text": "Hey! Welcome to Lens & Light Photography. How can we help you today?",
+          "timestamp": "2026-10-17T15:31:56.013Z",
+          "payload": {
+            "type": "menu",
+            "menuItems": [
+              {
+                "id": "menu_services",
+                "title": "Services & Prices",
+                "description": "Explore portrait, wedding, and event packages",
+                "icon": "camera"
+              },
+              {
+                "id": "menu_portfolio",
+                "title": "Portfolio & Galleries",
+                "description": "View curated highlights from recent sessions",
+                "icon": "image"
+              },
+              {
+                "id": "menu_policies",
+                "title": "Policies & Information",
+                "description": "Session prep, turnaround times, and booking terms",
+                "icon": "file-text"
+              },
+              {
+                "id": "menu_delivery",
+                "title": "Delivery & Print Ordering",
+                "description": "Download formats, cloud backup, and print studio",
+                "icon": "truck"
+              },
+              {
+                "id": "menu_talk_to_person",
+                "title": "Custom Message — Talk to a Person",
+                "description": "Leave a direct message for the studio team",
+                "icon": "user"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "conv_1792251156042_bin5",
+      "botId": "bot_photo_101",
+      "customerSessionId": "client_1792251156042",
+      "startedAt": "2026-10-17T15:32:36.042Z",
+      "lastActivityAt": "2026-10-17T15:32:36.042Z",
+      "status": "active",
+      "messages": [
+        {
+          "id": "msg_init_1792251156042",
+          "conversationId": "conv_1792251156042_bin5",
+          "sender": "bot",
+          "text": "Hey! Welcome to Lens & Light Photography. How can we help you today?",
+          "timestamp": "2026-10-17T15:32:36.042Z",
+          "payload": {
+            "type": "menu",
+            "menuItems": [
+              {
+                "id": "menu_services",
+                "title": "Services & Prices",
+                "description": "Explore portrait, wedding, and event packages",
+                "icon": "camera"
+              },
+              {
+                "id": "menu_portfolio",
+                "title": "Portfolio & Galleries",
+                "description": "View curated highlights from recent sessions",
+                "icon": "image"
+              },
+              {
+                "id": "menu_policies",
+                "title": "Policies & Information",
+                "description": "Session prep, turnaround times, and booking terms",
+                "icon": "file-text"
+              },
+              {
+                "id": "menu_delivery",
+                "title": "Delivery & Print Ordering",
+                "description": "Download formats, cloud backup, and print studio",
+                "icon": "truck"
+              },
+              {
+                "id": "menu_talk_to_person",
+                "title": "Custom Message — Talk to a Person",
+                "description": "Leave a direct message for the studio team",
+                "icon": "user"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "handoffRequests": [
+    {
+      "id": "handoff_req_101",
+      "conversationId": "conv_photo_seed_1",
+      "botId": "bot_photo_101",
+      "customerName": "Sarah Jenkins",
+      "customerContact": "sarah.j@example.com / +44 7700 900342",
+      "message": "Looking to check date availability for a 30-guest Cotswolds autumn elopement on October 18th.",
+      "historyExcerpt": "Customer asked about Cotswolds autumn elopement packages and requested date availability check.",
+      "status": "awaiting_response",
+      "handoffDestination": "dashboard_inbox",
+      "deliveryStatus": "delivered",
+      "createdAt": "2026-10-17T09:46:22.822Z"
+    }
+  ],
+  "actionSubmissions": [
+    {
+      "id": "action_sub_1",
+      "actionId": "act_table_res",
+      "actionType": "booking",
+      "actionTitle": "Table Reservation Request",
+      "botId": "bot_bistro_102",
+      "conversationId": "conv_resto_seed_1",
+      "data": {
+        "f_name": "David Sterling",
+        "f_phone": "(555) 438-9201",
+        "f_date": "2026-10-24",
+        "f_time": "19:30",
+        "f_guests": "3-4 Guests",
+        "f_notes": "Table near window if possible; celebrating anniversary."
+      },
+      "createdAt": "2026-10-17T12:34:22.822Z",
+      "status": "new"
+    }
+  ],
+  "menuClickCounts": {
+    "bot_photo_101": {
+      "menu_services": 19,
+      "menu_portfolio": 14,
+      "menu_policies": 7,
+      "menu_talk_to_person": 5
+    },
+    "bot_bistro_102": {
+      "menu_food_prices": 24,
+      "menu_reservations": 16,
+      "menu_allergies_policies": 9
+    }
+  }
+}

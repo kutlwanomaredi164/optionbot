@@ -1,0 +1,160 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile with role and associated current workspace.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "Firebase Auth UID" },
+        "email": { "type": "string", "description": "User email address" },
+        "name": { "type": "string", "description": "User display name", "maxLength": 100 },
+        "role": { "type": "string", "enum": ["owner", "admin", "member"], "description": "User system role" },
+        "currentWorkspaceId": { "type": "string", "description": "ID of active workspace", "maxLength": 128 },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "email", "name", "role", "createdAt"]
+    },
+    "Workspace": {
+      "title": "Workspace",
+      "description": "Workspace that organizes chatbots and team assets.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "name": { "type": "string", "maxLength": 120 },
+        "industry": { "type": "string", "maxLength": 100 },
+        "ownerId": { "type": "string", "maxLength": 128 },
+        "ownerEmail": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "name", "ownerId", "createdAt"]
+    },
+    "Chatbot": {
+      "title": "Chatbot",
+      "description": "Chatbot configuration entity including menu hierarchy, deployment, and appearance.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "workspaceId": { "type": "string", "maxLength": 128 },
+        "ownerId": { "type": "string", "maxLength": 128 },
+        "name": { "type": "string", "maxLength": 120 },
+        "businessName": { "type": "string", "maxLength": 120 },
+        "industry": { "type": "string", "maxLength": 100 },
+        "status": { "type": "string", "enum": ["draft", "published"] },
+        "currency": { "type": "string", "enum": ["ZAR", "USD", "EUR", "GBP"] },
+        "conversationStyle": { "type": "string", "enum": ["hybrid", "guided", "ai"] },
+        "deploymentId": { "type": "string", "maxLength": 128 },
+        "isDeploymentEnabled": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "workspaceId", "ownerId", "name", "businessName", "status", "createdAt"]
+    },
+    "KnowledgeItem": {
+      "title": "KnowledgeItem",
+      "description": "Contextual document or FAQ used for bot knowledge.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "botId": { "type": "string", "maxLength": 128 },
+        "title": { "type": "string", "maxLength": 200 },
+        "category": { "type": "string", "enum": ["faq", "service", "policy", "general", "pricing", "hours"] },
+        "content": { "type": "string", "maxLength": 10000 },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "botId", "title", "category", "content"]
+    },
+    "Conversation": {
+      "title": "Conversation",
+      "description": "Customer chat conversation session.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "botId": { "type": "string", "maxLength": 128 },
+        "customerSessionId": { "type": "string", "maxLength": 128 },
+        "status": { "type": "string", "enum": ["active", "handoff_requested", "closed"] },
+        "startedAt": { "type": "string", "format": "date-time" },
+        "lastActivityAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "botId", "startedAt", "status"]
+    },
+    "ChatMessage": {
+      "title": "ChatMessage",
+      "description": "Individual message in a conversation thread.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "conversationId": { "type": "string", "maxLength": 128 },
+        "sender": { "type": "string", "enum": ["bot", "customer", "agent"] },
+        "text": { "type": "string", "maxLength": 4000 },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "conversationId", "sender", "text", "timestamp"]
+    },
+    "HandoffRequest": {
+      "title": "HandoffRequest",
+      "description": "Human assistance escalation ticket.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "botId": { "type": "string", "maxLength": 128 },
+        "conversationId": { "type": "string", "maxLength": 128 },
+        "customerName": { "type": "string", "maxLength": 120 },
+        "customerContact": { "type": "string", "maxLength": 160 },
+        "message": { "type": "string", "maxLength": 4000 },
+        "status": { "type": "string", "enum": ["new", "awaiting_response", "in_progress", "resolved"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "botId", "conversationId", "message", "status", "createdAt"]
+    },
+    "ActionSubmission": {
+      "title": "ActionSubmission",
+      "description": "Interactive booking, quote, or contact form submission.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "botId": { "type": "string", "maxLength": 128 },
+        "actionId": { "type": "string", "maxLength": 128 },
+        "actionTitle": { "type": "string", "maxLength": 120 },
+        "actionType": { "type": "string", "maxLength": 60 },
+        "status": { "type": "string", "enum": ["new", "reviewed", "confirmed", "archived"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "botId", "actionId", "status", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/User" },
+      "description": "User profile records containing account ownership information."
+    },
+    "/workspaces/{workspaceId}": {
+      "schema": { "$ref": "#/entities/Workspace" },
+      "description": "Workspace containers owned by account holders."
+    },
+    "/chatbots/{botId}": {
+      "schema": { "$ref": "#/entities/Chatbot" },
+      "description": "Chatbot configurations, menus, and visual designs."
+    },
+    "/chatbots/{botId}/knowledge/{itemId}": {
+      "schema": { "$ref": "#/entities/KnowledgeItem" },
+      "description": "Business knowledge documents and FAQs."
+    },
+    "/chatbots/{botId}/conversations/{conversationId}": {
+      "schema": { "$ref": "#/entities/Conversation" },
+      "description": "Conversations initiated by customers or preview users."
+    },
+    "/chatbots/{botId}/conversations/{conversationId}/messages/{messageId}": {
+      "schema": { "$ref": "#/entities/ChatMessage" },
+      "description": "Messages sent within a conversation."
+    },
+    "/chatbots/{botId}/handoffRequests/{requestId}": {
+      "schema": { "$ref": "#/entities/HandoffRequest" },
+      "description": "Customer requests for human support."
+    },
+    "/chatbots/{botId}/actionSubmissions/{submissionId}": {
+      "schema": { "$ref": "#/entities/ActionSubmission" },
+      "description": "Submissions from interactive actions such as bookings and quotes."
+    }
+  }
+}

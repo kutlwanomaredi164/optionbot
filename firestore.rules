@@ -1,0 +1,273 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Default deny all unknown paths
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() > 0 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function getBot(botId) {
+      return get(/databases/$(database)/documents/chatbots/$(botId)).data;
+    }
+
+    function isBotOwner(botId) {
+      return isSignedIn() && getBot(botId).ownerId == request.auth.uid;
+    }
+
+    // Entity Validation Helpers
+    function isValidUser(data) {
+      return data.keys().hasAll(['uid', 'email', 'name', 'role']) &&
+             data.keys().hasOnly(['uid', 'email', 'name', 'role', 'currentWorkspaceId', 'createdAt', 'updatedAt']) &&
+             data.uid == request.auth.uid &&
+             data.name is string && data.name.size() <= 100 &&
+             data.email is string && data.email.size() <= 150 &&
+             data.role in ['owner', 'admin', 'member'];
+    }
+
+    function isValidWorkspace(data) {
+      return data.keys().hasAll(['id', 'name', 'ownerId']) &&
+             data.keys().hasOnly(['id', 'name', 'industry', 'ownerId', 'ownerEmail', 'createdAt', 'updatedAt']) &&
+             data.id is string && isValidId(data.id) &&
+             data.name is string && data.name.size() <= 120 &&
+             data.ownerId == request.auth.uid;
+    }
+
+    function isValidChatbot(data) {
+      return data.keys().hasAll(['id', 'workspaceId', 'ownerId', 'name', 'businessName', 'status']) &&
+             data.keys().hasOnly([
+               'id', 'workspaceId', 'ownerId', 'name', 'businessName', 'industry',
+               'status', 'currency', 'conversationStyle', 'deploymentId',
+               'isDeploymentEnabled', 'website', 'contactEmail', 'contactPhone',
+               'description', 'templateId', 'mainMenuItems', 'appearance', 'aiSettings',
+               'createdAt', 'updatedAt'
+             ]) &&
+             data.id is string && isValidId(data.id) &&
+             data.name is string && data.name.size() <= 120 &&
+             data.businessName is string && data.businessName.size() <= 120 &&
+             data.ownerId == request.auth.uid &&
+             data.status in ['draft', 'published'];
+    }
+
+    function isValidKnowledge(data, botId) {
+      return data.keys().hasAll(['id', 'botId', 'title', 'category', 'content']) &&
+             data.keys().hasOnly(['id', 'botId', 'title', 'category', 'type', 'content', 'tags', 'updatedAt']) &&
+             data.id is string && isValidId(data.id) &&
+             data.botId == botId &&
+             data.title is string && data.title.size() <= 200 &&
+             data.category is string && data.category.size() <= 60 &&
+             data.content is string && data.content.size() <= 10000;
+    }
+
+    function isValidConversation(data, botId) {
+      return data.keys().hasAll(['id', 'botId', 'status']) &&
+             data.keys().hasOnly(['id', 'botId', 'customerSessionId', 'status', 'startedAt', 'lastActivityAt', 'unreadCount', 'channel']) &&
+             data.id is string && isValidId(data.id) &&
+             data.botId == botId &&
+             data.status in ['active', 'handoff_requested', 'closed'];
+    }
+
+    function isValidChatMessage(data, conversationId) {
+      return data.keys().hasAll(['id', 'conversationId', 'sender', 'text']) &&
+             data.keys().hasOnly(['id', 'conversationId', 'sender', 'text', 'timestamp', 'quickReplies', 'actionType', 'metadata']) &&
+             data.id is string && isValidId(data.id) &&
+             data.conversationId == conversationId &&
+             data.sender in ['bot', 'customer', 'agent'] &&
+             data.text is string && data.text.size() <= 4000;
+    }
+
+    function isValidHandoff(data, botId) {
+      return data.keys().hasAll(['id', 'botId', 'conversationId', 'message', 'status']) &&
+             data.keys().hasOnly(['id', 'botId', 'conversationId', 'customerName', 'customerContact', 'message', 'status', 'createdAt', 'agentNotes', 'assignedTo']) &&
+             data.id is string && isValidId(data.id) &&
+             data.botId == botId &&
+             data.message is string && data.message.size() <= 4000 &&
+             data.status in ['new', 'awaiting_response', 'in_progress', 'resolved'];
+    }
+
+    function isValidActionSubmission(data, botId) {
+      return data.keys().hasAll(['id', 'botId', 'actionId', 'status']) &&
+             data.keys().hasOnly(['id', 'botId', 'actionId', 'actionTitle', 'actionType', 'payload', 'status', 'createdAt', 'customerName', 'customerContact']) &&
+             data.id is string && isValidId(data.id) &&
+             data.botId == botId &&
+             data.status in ['new', 'reviewed', 'confirmed', 'archived'];
+    }
+
+    // 1. Users collection
+    match /users/{userId} {
+      allow get: if isValidId(userId) && isOwner(userId);
+      allow list: if false; // PII Protection: users cannot list all user profiles
+
+      allow create: if isValidId(userId) &&
+                       isOwner(userId) &&
+                       isValidUser(incoming()) &&
+                       incoming().role == 'owner'; // Self-assigned role gate: can only start as standard owner
+
+      allow update: if isValidId(userId) &&
+                       isOwner(userId) &&
+                       isValidUser(incoming()) &&
+                       incoming().uid == existing().uid &&
+                       incoming().role == existing().role && // Prevent privilege escalation
+                       incoming().diff(existing()).affectedKeys().hasOnly(['name', 'currentWorkspaceId', 'updatedAt']);
+
+      allow delete: if isValidId(userId) && isOwner(userId);
+    }
+
+    // 2. Workspaces collection
+    match /workspaces/{workspaceId} {
+      allow get: if isValidId(workspaceId) &&
+                    isSignedIn() &&
+                    resource.data.ownerId == request.auth.uid;
+      allow list: if isSignedIn() &&
+                     resource.data.ownerId == request.auth.uid;
+
+      allow create: if isValidId(workspaceId) &&
+                       isSignedIn() &&
+                       isValidWorkspace(incoming()) &&
+                       incoming().ownerId == request.auth.uid;
+
+      allow update: if isValidId(workspaceId) &&
+                       isSignedIn() &&
+                       resource.data.ownerId == request.auth.uid &&
+                       incoming().ownerId == existing().ownerId &&
+                       isValidWorkspace(incoming()) &&
+                       incoming().diff(existing()).affectedKeys().hasOnly(['name', 'industry', 'ownerEmail', 'updatedAt']);
+
+      allow delete: if isValidId(workspaceId) &&
+                       isSignedIn() &&
+                       resource.data.ownerId == request.auth.uid;
+    }
+
+    // 3. Chatbots collection
+    match /chatbots/{botId} {
+      // Published chatbots are publicly readable by widgets; drafts only by owner
+      allow get: if isValidId(botId) &&
+                    (resource.data.status == 'published' || (isSignedIn() && resource.data.ownerId == request.auth.uid));
+      allow list: if isSignedIn() && resource.data.ownerId == request.auth.uid;
+
+      allow create: if isValidId(botId) &&
+                       isSignedIn() &&
+                       isValidChatbot(incoming()) &&
+                       incoming().ownerId == request.auth.uid;
+
+      allow update: if isValidId(botId) &&
+                       isSignedIn() &&
+                       resource.data.ownerId == request.auth.uid &&
+                       incoming().ownerId == existing().ownerId &&
+                       isValidChatbot(incoming()) &&
+                       incoming().diff(existing()).affectedKeys().hasOnly([
+                         'name', 'businessName', 'industry', 'status', 'currency',
+                         'conversationStyle', 'deploymentId', 'isDeploymentEnabled',
+                         'website', 'contactEmail', 'contactPhone', 'description',
+                         'templateId', 'mainMenuItems', 'appearance', 'aiSettings', 'updatedAt'
+                       ]);
+
+      allow delete: if isValidId(botId) &&
+                       isSignedIn() &&
+                       resource.data.ownerId == request.auth.uid;
+
+      // Subcollection: Knowledge Base
+      match /knowledge/{itemId} {
+        allow get, list: if isValidId(itemId) &&
+                            (getBot(botId).status == 'published' || isBotOwner(botId));
+        allow create: if isValidId(itemId) &&
+                         isBotOwner(botId) &&
+                         isValidKnowledge(incoming(), botId);
+        allow update: if isValidId(itemId) &&
+                         isBotOwner(botId) &&
+                         isValidKnowledge(incoming(), botId) &&
+                         incoming().botId == existing().botId &&
+                         incoming().diff(existing()).affectedKeys().hasOnly(['title', 'category', 'type', 'content', 'tags', 'updatedAt']);
+        allow delete: if isValidId(itemId) && isBotOwner(botId);
+      }
+
+      // Subcollection: Conversations
+      match /conversations/{conversationId} {
+        allow get: if isValidId(conversationId) &&
+                      (getBot(botId).status == 'published' || isBotOwner(botId));
+        allow list: if isBotOwner(botId);
+
+        allow create: if isValidId(conversationId) &&
+                         (getBot(botId).status == 'published' || isBotOwner(botId)) &&
+                         isValidConversation(incoming(), botId);
+
+        allow update: if isValidId(conversationId) &&
+                         (getBot(botId).status == 'published' || isBotOwner(botId)) &&
+                         isValidConversation(incoming(), botId) &&
+                         incoming().botId == existing().botId &&
+                         incoming().diff(existing()).affectedKeys().hasOnly(['status', 'lastActivityAt', 'unreadCount']);
+
+        allow delete: if isValidId(conversationId) && isBotOwner(botId);
+
+        // Subcollection: Messages
+        match /messages/{messageId} {
+          allow get: if isValidId(messageId) &&
+                        (getBot(botId).status == 'published' || isBotOwner(botId));
+          allow list: if isValidId(conversationId) &&
+                         (getBot(botId).status == 'published' || isBotOwner(botId));
+
+          allow create: if isValidId(messageId) &&
+                           (getBot(botId).status == 'published' || isBotOwner(botId)) &&
+                           isValidChatMessage(incoming(), conversationId);
+
+          allow update, delete: if false; // Chat messages are immutable
+        }
+      }
+
+      // Subcollection: Handoff Requests
+      match /handoffRequests/{requestId} {
+        allow get, list: if isBotOwner(botId);
+
+        allow create: if isValidId(requestId) &&
+                         (getBot(botId).status == 'published' || isBotOwner(botId)) &&
+                         isValidHandoff(incoming(), botId);
+
+        allow update: if isValidId(requestId) &&
+                         isBotOwner(botId) &&
+                         isValidHandoff(incoming(), botId) &&
+                         incoming().botId == existing().botId &&
+                         incoming().diff(existing()).affectedKeys().hasOnly(['status', 'agentNotes', 'assignedTo']);
+
+        allow delete: if isValidId(requestId) && isBotOwner(botId);
+      }
+
+      // Subcollection: Action Submissions
+      match /actionSubmissions/{submissionId} {
+        allow get, list: if isBotOwner(botId);
+
+        allow create: if isValidId(submissionId) &&
+                         (getBot(botId).status == 'published' || isBotOwner(botId)) &&
+                         isValidActionSubmission(incoming(), botId);
+
+        allow update: if isValidId(submissionId) &&
+                         isBotOwner(botId) &&
+                         isValidActionSubmission(incoming(), botId) &&
+                         incoming().botId == existing().botId &&
+                         incoming().diff(existing()).affectedKeys().hasOnly(['status']);
+
+        allow delete: if isValidId(submissionId) && isBotOwner(botId);
+      }
+    }
+  }
+}
