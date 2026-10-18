@@ -586,6 +586,136 @@
         "greetingMessage": "Benvenuti! Welcome to Bella Vista Trattoria. What would you like to explore today?",
         "fallbackMessage": "Our host team is pleased to assist. Please select from the menu options below or request a manager callback."
       }
+    },
+    {
+      "id": "bot_test_1792331065997",
+      "workspaceId": "ws_default_1",
+      "name": "Precision Dental AI",
+      "businessName": "Precision Dental Care",
+      "industry": "Dentists & Healthcare",
+      "description": "Family, cosmetic, and emergency dental practice in Bristol.",
+      "website": "https://precisiondental.co.uk",
+      "contactEmail": "reception@precisiondental.co.uk",
+      "conversationStyle": "hybrid",
+      "status": "published",
+      "createdAt": "2026-10-18T13:44:25.997Z",
+      "updatedAt": "2026-10-18T13:44:26.007Z",
+      "mainMenuItems": [
+        {
+          "id": "menu_treatments",
+          "title": "Treatments & Fees",
+          "description": "Exam, hygiene, whitening, and Invisalign",
+          "icon": "briefcase",
+          "isHidden": false,
+          "order": 1,
+          "subtopics": [
+            {
+              "id": "sub_whitening",
+              "title": "Professional Teeth Whitening",
+              "order": 1,
+              "contentType": "service_product",
+              "content": {
+                "serviceProduct": {
+                  "name": "Enlighten Premium Whitening",
+                  "description": "Guaranteed B1 shade result with home trays and in-chair power boost.",
+                  "price": "£395",
+                  "pricingMethod": "fixed",
+                  "duration": "45 mins initial scan",
+                  "inclusions": [
+                    "Custom whitening trays",
+                    "3 syringes of active whitening gel",
+                    "Desensitizing toothpaste"
+                  ],
+                  "actionLabel": "Book Whitening Scan"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "id": "menu_human",
+          "title": "Emergency Toothache — Talk to Nurse",
+          "description": "Urgent triage and same-day emergency slots",
+          "icon": "user",
+          "isHidden": false,
+          "order": 2,
+          "subtopics": [
+            {
+              "id": "sub_emerg_nurse",
+              "title": "Emergency Triage Request",
+              "order": 1,
+              "contentType": "human_assistance",
+              "content": {
+                "humanAssistance": {
+                  "introductoryMessage": "Please describe your dental emergency and pain level.",
+                  "customerMessagePlaceholder": "e.g. Broken molar, severe throbbing pain...",
+                  "requireContactDetails": true,
+                  "contactFields": [
+                    "name",
+                    "phone"
+                  ],
+                  "handoffDestination": "dashboard_inbox",
+                  "confirmationBehavior": "Emergency nurse will call within 15 minutes."
+                }
+              }
+            }
+          ]
+        },
+        {
+          "id": "menu_hours",
+          "title": "Opening Hours & Location",
+          "description": "Parking, tube station, and weekend opening hours",
+          "icon": "file-text",
+          "isHidden": false,
+          "order": 3,
+          "subtopics": [
+            {
+              "id": "sub_hours_info",
+              "title": "Clinic Hours & Weekend Clinic",
+              "order": 1,
+              "contentType": "information",
+              "content": {
+                "information": {
+                  "title": "Clinic Operating Hours",
+                  "shortDescription": "Open Mon-Fri 8am-7pm, Saturday 9am-2pm",
+                  "detailedContent": "We offer early morning and late evening appointments for busy professionals. Emergency walk-ins welcomed from 8:00 AM."
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "appearance": {
+        "botDisplayName": "Precision Dental Concierge",
+        "greetingMessage": "Welcome to Precision Dental Care. How can our clinic assist you today?",
+        "logoUrl": "",
+        "brandColor": "#0891b2",
+        "accentColor": "#06b6d4",
+        "launcherPosition": "bottom_right",
+        "headerStyle": "solid",
+        "widgetSize": "standard",
+        "welcomeScreenText": "Select a treatment or ask a question."
+      },
+      "deployment": {
+        "deploymentId": "dep_test_1792331065997",
+        "isEnabled": false,
+        "allowedDomains": [
+          "*"
+        ],
+        "embedSnippet": "<script src=\"/widget.js\" data-bot-id=\"dep_test_1792331065997\" async></script>",
+        "whatsappConfig": {
+          "isConnected": false,
+          "status": "disconnected"
+        }
+      },
+      "aiConfig": {
+        "model": "gemini-3.8-flash",
+        "systemPrompt": "You are the digital receptionist for Precision Dental Care. Provide polite, factual pricing.",
+        "temperature": 0.2,
+        "greetingMessage": "Welcome to Precision Dental Care.",
+        "fallbackMessage": "Please choose an option from our treatments menu."
+      },
+      "lastPublishedAt": "2026-10-18T13:44:26.005Z"
     }
   ],
   "knowledge": [
@@ -663,6 +793,23 @@
       ],
       "ingestionStatus": "ready",
       "updatedAt": "2026-10-17T14:34:22.822Z"
+    },
+    {
+      "botId": "bot_test_1792331065997",
+      "title": "Nervous & Anxious Patients Sedation",
+      "category": "service",
+      "type": "faq",
+      "content": "We provide gentle conscious IV sedation and nitrous oxide (laughing gas) for nervous patients. A certified dental anesthesiologist monitors your vital signs throughout the treatment.",
+      "tags": [
+        "sedation",
+        "nervous",
+        "anxiety",
+        "fear",
+        "pain"
+      ],
+      "ingestionStatus": "ready",
+      "id": "know_1792331066002_hodiq",
+      "updatedAt": "2026-10-18T13:44:26.002Z"
     }
   ],
   "conversations": [
@@ -1077,6 +1224,19 @@
   ],
   "handoffRequests": [
     {
+      "conversationId": "conv_dental_test_1",
+      "botId": "bot_test_1792331065997",
+      "customerName": "Marcus Thorne",
+      "customerContact": "+44 7911 123456",
+      "message": "Severe wisdom tooth throbbing pain since last night, need urgent appointment today.",
+      "historyExcerpt": "Customer asked for emergency toothache triage.",
+      "status": "new",
+      "handoffDestination": "dashboard_inbox",
+      "deliveryStatus": "delivered",
+      "id": "handoff_1792331066004_503i",
+      "createdAt": "2026-10-18T13:44:26.004Z"
+    },
+    {
       "id": "handoff_req_101",
       "conversationId": "conv_photo_seed_1",
       "botId": "bot_photo_101",
@@ -1121,6 +1281,9 @@
       "menu_food_prices": 24,
       "menu_reservations": 16,
       "menu_allergies_policies": 9
+    },
+    "bot_test_1792331065997": {
+      "menu_treatments": 2
     }
   }
 }

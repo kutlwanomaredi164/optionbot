@@ -181,6 +181,9 @@ export const firebaseAuthService = {
 
     // 2. Load Workspaces from Firestore
     let workspaces: Workspace[] = [];
+    const fullWorkspaceId = `ws_${cleanUid}`;
+    const legacyWorkspaceId = `ws_${cleanUid.slice(0, 12)}`;
+
     try {
       const wsQuery = query(collection(db, 'workspaces'), where('ownerId', '==', cleanUid));
       const wsSnap = await getDocs(wsQuery);
@@ -198,18 +201,42 @@ export const firebaseAuthService = {
       console.warn('Notice querying workspaces from Firestore:', err);
     }
 
+    // Direct doc fallback check to avoid re-creation collision if query was filtered
     if (workspaces.length === 0) {
+      try {
+        const [fullSnap, legacySnap] = await Promise.all([
+          getDoc(doc(db, 'workspaces', fullWorkspaceId)),
+          getDoc(doc(db, 'workspaces', legacyWorkspaceId)),
+        ]);
+        const existingSnap = fullSnap.exists() ? fullSnap : legacySnap.exists() ? legacySnap : null;
+        if (existingSnap) {
+          const data = existingSnap.data()!;
+          workspaces.push({
+            id: data.id || existingSnap.id,
+            name: data.name || 'Main Workspace',
+            industry: data.industry || 'Photography Studio',
+            ownerEmail: data.ownerEmail || userProfile.email,
+            createdAt: data.createdAt || new Date().toISOString(),
+          });
+        }
+      } catch (err) {
+        console.warn('Notice checking direct workspace documents:', err);
+      }
+    }
+
+    if (workspaces.length === 0) {
+      const chosenWorkspaceId = defaultWorkspaceId;
       const newWs: Workspace = {
-        id: defaultWorkspaceId,
+        id: chosenWorkspaceId,
         name: `${(userProfile.name || 'My').split(' ')[0]}'s Workspace`,
         industry: 'Photography Studio',
         ownerEmail: userProfile.email,
         createdAt: new Date().toISOString(),
       };
       workspaces = [newWs];
-      // Save to Firestore asynchronously
-      firestoreSync.saveWorkspace(newWs, cleanUid).catch((e) => {
-        console.warn('Async workspace write notice:', e);
+      // Save to Firestore
+      await firestoreSync.saveWorkspace(newWs, cleanUid).catch((e) => {
+        console.warn('Workspace write notice:', e);
       });
     }
 

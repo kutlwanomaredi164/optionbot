@@ -51,7 +51,11 @@ service cloud.firestore {
              data.keys().hasOnly(['id', 'name', 'industry', 'ownerId', 'ownerEmail', 'createdAt', 'updatedAt']) &&
              data.id is string && isValidId(data.id) &&
              data.name is string && data.name.size() <= 120 &&
-             data.ownerId == request.auth.uid;
+             data.ownerId == request.auth.uid &&
+             (!('industry' in data) || (data.industry is string && data.industry.size() <= 100)) &&
+             (!('ownerEmail' in data) || (data.ownerEmail is string && data.ownerEmail.size() <= 150)) &&
+             (!('createdAt' in data) || data.createdAt is string) &&
+             (!('updatedAt' in data) || data.updatedAt is string);
     }
 
     function isValidChatbot(data) {
@@ -145,14 +149,18 @@ service cloud.firestore {
       allow create: if isValidId(workspaceId) &&
                        isSignedIn() &&
                        isValidWorkspace(incoming()) &&
+                       incoming().id == workspaceId &&
                        incoming().ownerId == request.auth.uid;
 
       allow update: if isValidId(workspaceId) &&
                        isSignedIn() &&
                        resource.data.ownerId == request.auth.uid &&
                        incoming().ownerId == existing().ownerId &&
+                       incoming().id == existing().id &&
+                       incoming().id == workspaceId &&
                        isValidWorkspace(incoming()) &&
-                       incoming().diff(existing()).affectedKeys().hasOnly(['name', 'industry', 'ownerEmail', 'updatedAt']);
+                       (!('createdAt' in existing()) || incoming().createdAt == existing().createdAt) &&
+                       incoming().diff(existing()).affectedKeys().hasOnly(['name', 'industry', 'ownerEmail', 'updatedAt', 'createdAt']);
 
       allow delete: if isValidId(workspaceId) &&
                        isSignedIn() &&
@@ -169,18 +177,23 @@ service cloud.firestore {
       allow create: if isValidId(botId) &&
                        isSignedIn() &&
                        isValidChatbot(incoming()) &&
+                       incoming().id == botId &&
                        incoming().ownerId == request.auth.uid;
 
       allow update: if isValidId(botId) &&
                        isSignedIn() &&
                        resource.data.ownerId == request.auth.uid &&
                        incoming().ownerId == existing().ownerId &&
+                       incoming().id == existing().id &&
+                       incoming().id == botId &&
                        isValidChatbot(incoming()) &&
+                       (!('createdAt' in existing()) || incoming().createdAt == existing().createdAt) &&
                        incoming().diff(existing()).affectedKeys().hasOnly([
                          'name', 'businessName', 'industry', 'status', 'currency',
                          'conversationStyle', 'deploymentId', 'isDeploymentEnabled',
                          'website', 'contactEmail', 'contactPhone', 'description',
-                         'templateId', 'mainMenuItems', 'appearance', 'aiSettings', 'updatedAt'
+                         'templateId', 'mainMenuItems', 'appearance', 'aiSettings', 'updatedAt',
+                         'lastPublishedAt', 'createdAt'
                        ]);
 
       allow delete: if isValidId(botId) &&

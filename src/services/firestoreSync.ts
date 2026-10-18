@@ -17,7 +17,7 @@ export const firestoreSync = {
         name: workspace.name.slice(0, 120),
         industry: (workspace.industry || 'General').slice(0, 100),
         ownerId: userId,
-        ownerEmail: auth.currentUser?.email || '',
+        ownerEmail: workspace.ownerEmail || auth.currentUser?.email || '',
         createdAt: workspace.createdAt || new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       }, { merge: true });
